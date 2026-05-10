@@ -65,3 +65,4 @@ def node_pdf_to_md(state: ImportGraphState) -> ImportGraphState:
         # 6. 结束的日志和任务状态的配置
         logger.info(f">>> [{function_name}]开始结束了！现在的状态为：{state}")
         add_done_task(state['task_id'], function_name)
+    return state

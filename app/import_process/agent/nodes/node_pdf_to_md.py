@@ -10,7 +10,35 @@ from app.utils.path_util import PROJECT_ROOT
 
 
 def step_1_validate_paths(state):
-    pass
+    """
+    进行路径校验！ pdf_path失效 直接异常处理!
+                local_dir 没有，给与默认值
+    :param state:
+    :return:
+    """
+    logger.debug(f">>> [step_1_validate_paths]在md转pdf下，开始进行文件格式校验！！")
+    pdf_path = state['pdf_path']
+    local_dir = state['local_dir']
+    # 常规的非空校验 （站在字符串的角度）
+    if not pdf_path:
+        logger.error("step_1_validate_paths检查发现没有输入文件，无法继续解析！！")
+        raise ValueError("step_1_validate_paths检查发现没有输入文件，无法继续解析！！")
+    if not local_dir:
+        # 给与一个输出的默认值
+        local_dir = str(PROJECT_ROOT / "output")
+        logger.info(f"step_1_validate_paths检查发现local_dir没有赋值，给与默认值：{local_dir}！")
+    # 进行文件存在校验
+    pdf_path_obj = Path(pdf_path)
+    local_dir_obj = Path(local_dir)
+
+    if not pdf_path_obj.exists():
+        logger.error(f"[step_1_validate_paths检查发现pdf_path不存在，请检查输入文件路径是否正确！！")
+        raise FileNotFoundError(f"[step_1_validate_paths]检查发现pdf_path不存在，请检查输入文件路径是否正确！！")
+    if not local_dir_obj.exists():
+        logger.error(f"[step_1_validate_paths检查发现local_dir不存在，主动创建对应的文件夹！！！")
+        local_dir_obj.mkdir(parents=True, exist_ok=True)
+
+    return pdf_path_obj, local_dir_obj
 
 
 def step_2_upload_and_poll(pdf_path_obj):

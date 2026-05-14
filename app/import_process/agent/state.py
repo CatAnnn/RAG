@@ -15,11 +15,11 @@ class ImportGraphState(TypedDict):
     is_pdf_read_enabled: bool  # 是否启用 PDF 读取路径
 
 
-    # --- 切块相关【没用】 ---
-    is_normal_split_enabled: bool
-    is_silicon_flow_api_enabled: bool
-    is_advanced_split_enabled: bool
-    is_vllm_enabled: bool
+    # # --- 切块相关【没用】 ---
+    # is_normal_split_enabled: bool
+    # is_silicon_flow_api_enabled: bool
+    # is_advanced_split_enabled: bool
+    # is_vllm_enabled: bool
 
     # --- 路径相关 ---
     local_dir: str        # 当前工作目录或输出目录

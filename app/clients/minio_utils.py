@@ -9,19 +9,29 @@ from app.core.logger import logger
 # 全局MinIO客户端对象，初始化后供全项目调用
 minio_client = None
 
+# 配置参数导入到 .env
+# 本次要获取minio的客户端，并且创建好桶和设置桶的访问权限（备用）
+#1. 相当于你登录了minio
 try:
     # 初始化MinIO客户端实例
     minio_client = Minio(
+        # 端点
         endpoint=minio_config.endpoint,
+        # 账号
         access_key=minio_config.access_key,
+        # 密码
         secret_key=minio_config.secret_key,
         secure=False  # 内网/本地部署用HTTP，公网部署需改为True并配置SSL
     )
+
+    # 2. 创建一个桶
+    # 没有才创建桶
     bucket_name = minio_config.bucket_name
 
     # 检查存储桶是否存在，不存在则自动创建
     if not minio_client.bucket_exists(bucket_name):
         logger.info(f"MinIO存储桶[{bucket_name}]不存在，开始创建")
+        # 不存在桶，创建，并设置访问权限
         minio_client.make_bucket(bucket_name)
         logger.info(f"MinIO存储桶[{bucket_name}]创建成功")
     else:
